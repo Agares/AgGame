@@ -1,9 +1,10 @@
-﻿using AgaresGame.Engine.Mathematics;
+﻿using System.Windows.Forms;
+using AgaresGame.Engine.Mathematics;
 using AgaresGame.Engine.Resources.Graphics;
 
 namespace AgaresGame.Engine.Graphics
 {
-	public class Text : IRenderable
+	public class Text : IRenderable, ISizedRenderable
 	{
 		private readonly Font _font;
 		private readonly string _text;
@@ -12,6 +13,11 @@ namespace AgaresGame.Engine.Graphics
 		{
 			_font = font;
 			_text = text;
+		}
+
+		public Vector2 Size
+		{
+			get { return _font.ComputeSize(_text); }
 		}
 
 		public void Render(RenderContext context, Point2 position)

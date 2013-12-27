@@ -46,18 +46,31 @@
     <Compile Include="Cache\InMemoryObjectCache.cs" />
     <Compile Include="Cache\IObjectCache.cs" />
     <Compile Include="Cache\ItemNotInCacheException.cs" />
+    <Compile Include="ClickEventArgs.cs" />
     <Compile Include="Extensions\IntExtensions.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GameLoop.cs" />
     <Compile Include="Graphics\Color.cs" />
+    <Compile Include="Graphics\DummyRenderable.cs" />
     <Compile Include="Graphics\IRenderable.cs" />
     <Compile Include="Graphics\IRenderablePartially.cs" />
+    <Compile Include="Graphics\ISizedRenderable.cs" />
     <Compile Include="Graphics\Sprite.cs" />
     <Compile Include="Graphics\SpriteSheet.cs" />
     <Compile Include="Graphics\Text.cs" />
     <Compile Include="Graphics\Tile.cs" />
     <Compile Include="Graphics\TileSet.cs" />
+    <Compile Include="Gui\Border.cs" />
+    <Compile Include="Gui\BordersAppearance.cs" />
+    <Compile Include="Gui\Button.cs" />
+    <Compile Include="Gui\ButtonAppearance.cs" />
+    <Compile Include="Gui\ClickDelegateArgs.cs" />
+    <Compile Include="Gui\CornersAppearance.cs" />
+    <Compile Include="Gui\IScalableSizedRenderable.cs" />
+    <Compile Include="Gui\MouseButton.cs" />
+    <Compile Include="Gui\Padding.cs" />
     <Compile Include="KeyboardTranslator.cs" />
+    <Compile Include="KeyDownEventArgs.cs" />
     <Compile Include="Keys.cs" />
     <Compile Include="Map\Map.cs" />
     <Compile Include="Map\MapObject.cs" />
@@ -75,6 +88,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Modifiers.cs" />
+    <Compile Include="MouseMoveEventArgs.cs" />
+    <Compile Include="MouseTranslator.cs" />
     <Compile Include="Performance\PerformanceCounter.cs" />
     <Compile Include="Performance\PerformanceCounterResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -92,6 +107,7 @@
     <Compile Include="Utils\SdlColorUtils.cs" />
     <Compile Include="Utils\SdlRectUtils.cs" />
     <Compile Include="Window.cs" />
+    <Compile Include="GameEvents.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="libfreetype-6.dll">

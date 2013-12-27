@@ -24,9 +24,25 @@ namespace AgaresGame.Engine.Resources.Graphics
 
 		public void Render(RenderContext renderContext, string text, Point2 destination)
 		{
-			FontWithSize sizedFont = _cache.TryGet(_filename + " -- " + Appearance.Size, new TimeSpan(365, 0, 0, 0),
-				() => new FontWithSize(_filename, Appearance.Size));
-			sizedFont.Render(renderContext, text, destination, Appearance.Color);
+			CurrentSizedFont.Render(renderContext, text, destination, Appearance.Color);
+		}
+
+		private FontWithSize CurrentSizedFont
+		{
+			get
+			{
+				return _cache.TryGet(CacheKey, TimeSpan.MaxValue, () => new FontWithSize(_filename, Appearance.Size));
+			}
+		}
+
+		private string CacheKey
+		{
+			get { return string.Format("{0}#{1}", _filename, Appearance.Size); }
+		}
+
+		public Vector2 ComputeSize(string text)
+		{
+			return CurrentSizedFont.ComputeSize(text);
 		}
 	}
 }

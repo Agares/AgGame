@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using AgaresGame.Engine;
 using AgaresGame.Engine.Graphics;
+using AgaresGame.Engine.Gui;
 using AgaresGame.Engine.Map;
 using AgaresGame.Engine.Mathematics;
 using AgaresGame.Engine.Resources;
@@ -17,9 +19,12 @@ namespace AgaresGame
 		private Map _map;
 		private TileSet _mapTileSet;
 		private SpriteSheet _spriteSheet;
+		private SpriteSheet _guiSpriteSheet;
+		private Button _button;
 
 		public MyGame(Window window) : base(window)
 		{
+			GameEvents.KeyDown += KeyDownHandler;
 		}
 
 		protected override void RenderFrame()
@@ -28,6 +33,7 @@ namespace AgaresGame
 
 			RenderContext.Render(_map, new Point2(0,0));
 			RenderContext.Render(new Text(_font, LastRenderTime.FramesPerSecond.ToString("F2")), new Point2(0, 0));
+			RenderContext.Render(_button, new Point2(100, 150));
 
 			RenderContext.Present();
 		}
@@ -53,40 +59,48 @@ namespace AgaresGame
 				{0, new Rectangle(Point2.Zero, new Vector2(128, 96))}
 			});
 
+			_guiSpriteSheet = new SpriteSheet(resourceManager.Textures["gui.png"], new Dictionary<int, Rectangle>
+			{
+				{0, new Rectangle(new Point2(3, 0), new Vector2(1, 3))},
+				{1, new Rectangle(new Point2(0, 3), new Vector2(3, 1))},
+				{2, new Rectangle(new Point2(125, 3), new Vector2(3, 1))},
+				{3, new Rectangle(new Point2(3, 23), new Vector2(1, 3))},
+				{4, new Rectangle(new Point2(3, 3), new Vector2(1, 1))},
+				{5, new Rectangle(new Point2(0, 0), new Vector2(3, 3))}
+			});
+
 			_map.Objects.Add(new MapObject
 			{
 				PositionInTiles = new Point2(1, 0),
 				Renderable = _spriteSheet[0],
 				RenderDimensions = _spriteSheet[0].Rectangle.Size
 			});
+
+			_button = new Button(GameEvents, new ButtonAppearance
+			{
+				Background = _guiSpriteSheet[4],
+				Padding = new Padding {Top = 10,Left=10,Right=10,Bottom = 10}
+			}, new Text(_font, "Testful button"));
+			_button.Click += (sender, args) => Console.WriteLine("Button click, btn: " + args.MouseButton.ToString());
 		}
 
-		protected override void OnQuit()
+		protected void KeyDownHandler(object sender, KeyDownEventArgs keyDownEventArgs)
 		{
-		}
-
-		protected override void OnKeyDown(Keys key, Modifiers modifier)
-		{
-			if (key == Keys.Left)
+			switch (keyDownEventArgs.Key)
 			{
-				_map.Shift = new Vector2(_map.Shift.X + 1, _map.Shift.Y);
+				case Keys.Left:
+					_map.Shift = new Vector2(_map.Shift.X + 1, _map.Shift.Y);
+					break;
+				case Keys.Right:
+					_map.Shift = new Vector2(_map.Shift.X - 1, _map.Shift.Y);
+					break;
+				case Keys.Up:
+					_map.Shift = new Vector2(_map.Shift.X, _map.Shift.Y + 1);
+					break;
+				case Keys.Down:
+					_map.Shift = new Vector2(_map.Shift.X, _map.Shift.Y - 1);
+					break;
 			}
-			else if (key == Keys.Right)
-			{
-				_map.Shift = new Vector2(_map.Shift.X - 1, _map.Shift.Y);
-			}
-			else if (key == Keys.Up)
-			{
-				_map.Shift = new Vector2(_map.Shift.X, _map.Shift.Y + 1);
-			}
-			else if (key == Keys.Down)
-			{
-				_map.Shift = new Vector2(_map.Shift.X, _map.Shift.Y - 1);
-			}
-		}
-
-		protected override void OnMouseMove(Point2 position)
-		{
 		}
 	}
 }

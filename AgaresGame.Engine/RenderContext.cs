@@ -47,9 +47,9 @@ namespace AgaresGame.Engine
 			SDL.SDL_RenderPresent(Renderer);
 		}
 
-		public void Render(IRenderable map, Point2 position)
+		public void Render(IRenderable objectToRender, Point2 position)
 		{
-			map.Render(this, position);
+			objectToRender.Render(this, position);
 		}
 	}
 }

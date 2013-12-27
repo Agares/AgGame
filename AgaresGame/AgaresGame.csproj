@@ -54,10 +54,14 @@
     <None Include="Content\Fonts\font.ttf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Content\gui.psd" />
     <None Include="Content\tiles.psd" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\gui.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\hacjenda.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
