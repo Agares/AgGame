@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgaresGame", "AgaresGame\AgaresGame.csproj", "{F9711FCB-6AEF-4C6F-94F6-A45211646692}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgaresGame.Engine", "AgaresGame.Engine\AgaresGame.Engine.csproj", "{86491B8F-6ABA-4FB9-9F11-6E0F9CA0E196}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F9711FCB-6AEF-4C6F-94F6-A45211646692}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9711FCB-6AEF-4C6F-94F6-A45211646692}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9711FCB-6AEF-4C6F-94F6-A45211646692}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9711FCB-6AEF-4C6F-94F6-A45211646692}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86491B8F-6ABA-4FB9-9F11-6E0F9CA0E196}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86491B8F-6ABA-4FB9-9F11-6E0F9CA0E196}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86491B8F-6ABA-4FB9-9F11-6E0F9CA0E196}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86491B8F-6ABA-4FB9-9F11-6E0F9CA0E196}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,8 @@
+﻿create spritebatch(elements without fixed size and position), make tileset a child of it
+fix/rewrite tile map
+	- support clipping on all of the sides
+	- support different-sized objects on the map
+
+LONG TERM GOALS:
+resource locators
+gui
