@@ -60,14 +60,10 @@
     <Compile Include="Graphics\Text.cs" />
     <Compile Include="Graphics\Tile.cs" />
     <Compile Include="Graphics\TileSet.cs" />
-    <Compile Include="Gui\Border.cs" />
-    <Compile Include="Gui\BordersAppearance.cs" />
     <Compile Include="Gui\Button.cs" />
     <Compile Include="Gui\ButtonAppearance.cs" />
     <Compile Include="Gui\ClickDelegateArgs.cs" />
-    <Compile Include="Gui\CornersAppearance.cs" />
     <Compile Include="Gui\IScalableSizedRenderable.cs" />
-    <Compile Include="Gui\MouseButton.cs" />
     <Compile Include="Gui\Padding.cs" />
     <Compile Include="KeyboardTranslator.cs" />
     <Compile Include="KeyDownEventArgs.cs" />
@@ -88,6 +84,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Modifiers.cs" />
+    <Compile Include="MouseButton.cs" />
     <Compile Include="MouseMoveEventArgs.cs" />
     <Compile Include="MouseTranslator.cs" />
     <Compile Include="Performance\PerformanceCounter.cs" />

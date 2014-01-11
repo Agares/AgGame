@@ -1,4 +1,4 @@
-﻿namespace AgaresGame.Engine.Gui
+﻿namespace AgaresGame.Engine
 {
 	public enum MouseButtons
 	{
