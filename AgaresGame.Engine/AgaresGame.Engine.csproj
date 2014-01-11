@@ -97,7 +97,7 @@
     <Compile Include="Resources\Graphics\Font.cs" />
     <Compile Include="Resources\Graphics\FontAppearance.cs" />
     <Compile Include="Resources\Graphics\FontLoader.cs" />
-    <Compile Include="Resources\Graphics\FontWithSize.cs" />
+    <Compile Include="Resources\Graphics\SizedFont.cs" />
     <Compile Include="Resources\Graphics\TextureLoader.cs" />
     <Compile Include="Resources\IResource.cs" />
     <Compile Include="Resources\Loaders\CachedResourceLoader.cs" />

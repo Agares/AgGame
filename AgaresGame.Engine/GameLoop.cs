@@ -1,52 +1,52 @@
-﻿using AgaresGame.Engine.Performance;
-using AgaresGame.Engine.Resources;
-
-namespace AgaresGame.Engine
+﻿namespace AgaresGame.Engine
 {
+	using AgaresGame.Engine.Performance;
+	using AgaresGame.Engine.Resources;
+
 	public abstract class GameLoop
 	{
-		public GameEvents GameEvents { get; private set; }
-
-		protected PerformanceCounterResult LastRenderTime;
-		protected bool Quit;
-		protected RenderContext RenderContext;
-
-		private readonly Window _window;
-
+		private readonly Window window;
 
 		protected GameLoop(Window window)
 		{
-			_window = window;
+			this.window = window;
 
-			Quit = false;
-			GameEvents = new GameEvents();
-			GameEvents.Quit += (sender, args) => Quit = true;
+			this.Quit = false;
+			this.GameEvents = new GameEvents();
+			this.GameEvents.Quit += (sender, args) => this.Quit = true;
 		}
+
+		public GameEvents GameEvents { get; private set; }
+
+		protected PerformanceCounterResult LastRenderTime { get; set; }
+
+		protected bool Quit { get; set; }
+
+		protected RenderContext RenderContext { get; set; }
 
 		public void Run()
 		{
-			LoadResources(_window.RenderContext.Resources);
-			RenderContext = _window.RenderContext;
+			this.LoadResources(this.window.RenderContext.Resources);
+			this.RenderContext = this.window.RenderContext;
 			var performanceCounterResult = new PerformanceCounterResult(0);
 
-			while (!Quit)
+			while (!this.Quit)
 			{
-				GameEvents.HandleEvents();
-
 				var counter = new PerformanceCounter();
-				ExecuteLoopBody(performanceCounterResult);
+				this.ExecuteLoopBody(performanceCounterResult);
 				performanceCounterResult = counter.EndFrame();
 			}
 		}
 
-		private void ExecuteLoopBody(PerformanceCounterResult lastRenderTime)
-		{
-			LastRenderTime = lastRenderTime;
-			GameEvents.HandleEvents();
-			RenderFrame();
-		}
+		protected abstract void LoadResources(ResourceManager resourceManager);
 
 		protected abstract void RenderFrame();
-		protected abstract void LoadResources(ResourceManager resourceManager);
+
+		private void ExecuteLoopBody(PerformanceCounterResult lastRenderTime)
+		{
+			this.LastRenderTime = lastRenderTime;
+			this.GameEvents.HandleEvents();
+			this.RenderFrame();
+		}
 	}
 }

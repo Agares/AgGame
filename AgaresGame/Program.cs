@@ -1,8 +1,9 @@
-﻿using System;
-using AgaresGame.Engine;
-
-namespace AgaresGame
+﻿namespace AgaresGame
 {
+	using System;
+
+	using AgaresGame.Engine;
+
 	internal class Program
 	{
 		[STAThread]

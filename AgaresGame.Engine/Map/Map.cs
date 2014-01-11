@@ -1,63 +1,76 @@
-﻿using System.Collections.Generic;
-using AgaresGame.Engine.Extensions;
-using AgaresGame.Engine.Graphics;
-using AgaresGame.Engine.Mathematics;
-
-namespace AgaresGame.Engine.Map
+﻿namespace AgaresGame.Engine.Map
 {
+	using System.Collections.Generic;
+
+	using AgaresGame.Engine.Extensions;
+	using AgaresGame.Engine.Graphics;
+	using AgaresGame.Engine.Mathematics;
+
 	public class Map : IRenderable
 	{
-		public TileSet TileSet { get; private set; }
-		public Vector2 Dimensions { get; private set; }
-		public IList<MapObject> Objects { get; private set; }
+		private readonly Vector2 renderDimensions;
 
-		private readonly MapTile[,] _tiles;
-		private readonly Vector2 _renderDimensions;
-		private readonly MapRenderer _renderer;
-		private Vector2 _shift;
+		private readonly MapRenderer renderer;
 
-		public Vector2 Shift
-		{
-			get { return _shift; }
-			set { _shift = new Vector2(value.X.Clamp(0, Dimensions.X - 1), value.Y.Clamp(0, Dimensions.Y - 1)); }
-		}
+		private readonly MapTile[,] tiles;
 
-		public MapTile this[int x, int y]
-		{
-			get { return _tiles[x, y]; }
-		}
+		private Vector2 shift;
 
 		public Map(TileSet tileSet, Vector2 renderDimensions, Vector2 dimensions)
 		{
-			Objects = new List<MapObject>();
-			TileSet = tileSet;
-			Dimensions = dimensions;
-			Shift = Vector2.Zero;
+			this.Objects = new List<MapObject>();
+			this.TileSet = tileSet;
+			this.Dimensions = dimensions;
+			this.Shift = Vector2.Zero;
 
-			_tiles = new MapTile[dimensions.X,dimensions.Y];
-			_renderer = new MapRenderer();
-			_renderDimensions = renderDimensions;
+			this.tiles = new MapTile[dimensions.X, dimensions.Y];
+			this.renderer = new MapRenderer();
+			this.renderDimensions = renderDimensions;
 
-			InitializeTiles();
+			this.InitializeTiles();
 		}
 
-		private void InitializeTiles()
+		public Vector2 Dimensions { get; private set; }
+
+		public IList<MapObject> Objects { get; private set; }
+
+		public Vector2 Shift
 		{
-			for (int i = 0; i < Dimensions.X; i++)
+			get
 			{
-				for (int j = 0; j < Dimensions.Y; j++)
-				{
-					_tiles[i, j] = new MapTile(i, j)
-					{
-						Tile = TileSet[0]
-					};
-				}
+				return this.shift;
+			}
+
+			set
+			{
+				this.shift = new Vector2(value.X.Clamp(0, this.Dimensions.X - 1), value.Y.Clamp(0, this.Dimensions.Y - 1));
+			}
+		}
+
+		public TileSet TileSet { get; private set; }
+
+		public MapTile this[int x, int y]
+		{
+			get
+			{
+				return this.tiles[x, y];
 			}
 		}
 
 		public void Render(RenderContext context, Point2 position)
 		{
-			_renderer.Render(context, new Rectangle(position, _renderDimensions), this);
+			this.renderer.Render(context, new Rectangle(position, this.renderDimensions), this);
+		}
+
+		private void InitializeTiles()
+		{
+			for (int i = 0; i < this.Dimensions.X; i++)
+			{
+				for (int j = 0; j < this.Dimensions.Y; j++)
+				{
+					this.tiles[i, j] = new MapTile { Tile = this.TileSet[0] };
+				}
+			}
 		}
 	}
 }

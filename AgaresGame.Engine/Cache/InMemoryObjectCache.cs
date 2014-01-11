@@ -1,34 +1,32 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using AgaresGame.Engine.Resources;
-
 namespace AgaresGame.Engine.Cache
 {
+	using System;
+	using System.Collections.Generic;
+	using System.Linq;
+
 	internal class InMemoryObjectCache<T> : IObjectCache<T>
 	{
-		private readonly IDictionary<string, CacheItem> _cacheItems;
+		private readonly IDictionary<string, CacheItem> cacheItems;
 
 		public InMemoryObjectCache()
 		{
-			_cacheItems = new Dictionary<string, CacheItem>();
+			this.cacheItems = new Dictionary<string, CacheItem>();
 		}
 
-		public void Set(string key, T obj, TimeSpan duration)
+		public void Dispose()
 		{
-			_cacheItems[key] = new CacheItem
+			IEnumerable<IDisposable> disposableItems = this.cacheItems.Select(x => x.Value.Object).OfType<IDisposable>();
+			foreach (IDisposable item in disposableItems)
 			{
-				Object = obj,
-				Duration = duration,
-				InsertionTime = DateTime.Now
-			};
+				item.Dispose();
+			}
 		}
 
 		public T Get(string key)
 		{
-			if (IsInCache(key))
+			if (this.IsInCache(key))
 			{
-				return GetUnchecked(key);
+				return this.GetUnchecked(key);
 			}
 
 			throw new ItemNotInCacheException();
@@ -36,60 +34,59 @@ namespace AgaresGame.Engine.Cache
 
 		public T GetOrDefault(string key, T defaultValue = default(T))
 		{
-			if (IsInCache(key))
+			if (this.IsInCache(key))
 			{
-				return GetUnchecked(key);
+				return this.GetUnchecked(key);
 			}
 
 			return defaultValue;
 		}
 
-		public T TryGet(string key, TimeSpan lifetime, Func<T> factory)
-		{
-			if (IsInCache(key))
-			{
-				return GetUnchecked(key);
-			}
-
-			Set(key, factory(), lifetime);
-			return GetUnchecked(key);
-		}
-
 		public bool IsInCache(string key)
 		{
-			if (!_cacheItems.ContainsKey(key))
+			if (!this.cacheItems.ContainsKey(key))
 			{
 				return false;
 			}
 
-			CacheItem cacheItem = _cacheItems[key];
+			CacheItem cacheItem = this.cacheItems[key];
 			bool outdated = (DateTime.Now - cacheItem.InsertionTime) > cacheItem.Duration;
 			if (!outdated)
 			{
 				return true;
 			}
+
 			return false;
 		}
 
-		public void Dispose()
+		public void Set(string key, T obj, TimeSpan duration)
 		{
-			IEnumerable<IDisposable> disposableItems = _cacheItems.Select(x => x.Value.Object).OfType<IDisposable>();
-			foreach (IDisposable item in disposableItems)
+			this.cacheItems[key] = new CacheItem { Object = obj, Duration = duration, InsertionTime = DateTime.Now };
+		}
+
+		public T TryGet(string key, TimeSpan lifetime, Func<T> factory)
+		{
+			if (this.IsInCache(key))
 			{
-				item.Dispose();
+				return this.GetUnchecked(key);
 			}
+
+			this.Set(key, factory(), lifetime);
+			return this.GetUnchecked(key);
 		}
 
 		private T GetUnchecked(string key)
 		{
-			return _cacheItems[key].Object;
+			return this.cacheItems[key].Object;
 		}
 
 		private class CacheItem
 		{
-			public T Object { get; set; }
 			public TimeSpan Duration { get; set; }
+
 			public DateTime InsertionTime { get; set; }
-		};
+
+			public T Object { get; set; }
+		}
 	}
 }

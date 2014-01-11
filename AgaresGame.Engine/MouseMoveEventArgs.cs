@@ -1,15 +1,16 @@
-using System;
-using AgaresGame.Engine.Mathematics;
-
 namespace AgaresGame.Engine
 {
+	using System;
+
+	using AgaresGame.Engine.Mathematics;
+
 	public class MouseMoveEventArgs : EventArgs
 	{
-		public Point2 Position { get; private set; }
-
 		public MouseMoveEventArgs(Point2 position)
 		{
-			Position = position;
+			this.Position = position;
 		}
+
+		public Point2 Position { get; private set; }
 	}
 }

@@ -1,10 +1,35 @@
-using System.Diagnostics;
-using SDL2;
-
 namespace AgaresGame.Engine
 {
+	using System.Diagnostics;
+
+	using SDL2;
+
 	internal class KeyboardTranslator
 	{
+		public Modifiers TranslateModifier(SDL.SDL_Keymod mod)
+		{
+			switch (mod)
+			{
+				case SDL.SDL_Keymod.KMOD_NONE:
+					return Modifiers.None;
+				case SDL.SDL_Keymod.KMOD_LALT:
+					return Modifiers.LAlt;
+				case SDL.SDL_Keymod.KMOD_LCTRL:
+					return Modifiers.LCtrl;
+				case SDL.SDL_Keymod.KMOD_LSHIFT:
+					return Modifiers.LShift;
+				case SDL.SDL_Keymod.KMOD_RALT:
+					return Modifiers.RAlt;
+				case SDL.SDL_Keymod.KMOD_RCTRL:
+					return Modifiers.RCtrl;
+				case SDL.SDL_Keymod.KMOD_RSHIFT:
+					return Modifiers.RShift;
+			}
+
+			Debug.WriteLine("Unsupported modifier");
+			return Modifiers.None;
+		}
+
 		internal Keys TranslateKey(SDL.SDL_Keycode keysym)
 		{
 			switch (keysym)
@@ -153,29 +178,6 @@ namespace AgaresGame.Engine
 
 			Debug.WriteLine("Unsupported keycode");
 			return Keys.A;
-		}
-
-		public Modifiers TranslateModifier(SDL.SDL_Keymod mod)
-		{
-			switch (mod)
-			{
-				case SDL.SDL_Keymod.KMOD_NONE:
-					return Modifiers.None;
-				case SDL.SDL_Keymod.KMOD_LALT:
-					return Modifiers.LAlt;
-				case SDL.SDL_Keymod.KMOD_LCTRL:
-					return Modifiers.LCtrl;
-				case SDL.SDL_Keymod.KMOD_LSHIFT:
-					return Modifiers.LShift;
-				case SDL.SDL_Keymod.KMOD_RALT:
-					return Modifiers.RAlt;
-				case SDL.SDL_Keymod.KMOD_RCTRL:
-					return Modifiers.RCtrl;
-				case SDL.SDL_Keymod.KMOD_RSHIFT:
-					return Modifiers.RShift;
-			}
-			Debug.WriteLine("Unsupported modifier");
-			return Modifiers.None;
 		}
 	}
 }

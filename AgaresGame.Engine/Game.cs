@@ -1,8 +1,9 @@
-﻿using System;
-using SDL2;
-
-namespace AgaresGame.Engine
+﻿namespace AgaresGame.Engine
 {
+	using System;
+
+	using SDL2;
+
 	public class Game
 	{
 		public static void InitializeSdl()

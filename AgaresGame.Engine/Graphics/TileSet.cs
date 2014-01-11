@@ -1,59 +1,80 @@
-﻿using System.Collections.Generic;
-using AgaresGame.Engine.Mathematics;
-using AgaresGame.Engine.Resources.Graphics;
-
-namespace AgaresGame.Engine.Graphics
+﻿namespace AgaresGame.Engine.Graphics
 {
+	using System.Collections.Generic;
+
+	using AgaresGame.Engine.Mathematics;
+	using AgaresGame.Engine.Resources.Graphics;
+
 	public class TileSet
 	{
-		private readonly Texture _texture;
-		private readonly int _tileSize;
-		private readonly IList<Tile> _tiles = new List<Tile>();
+		private readonly Texture texture;
+
+		private readonly int tileSize;
+
+		private readonly IList<Tile> tiles = new List<Tile>();
 
 		public TileSet(Texture texture, int tileSize)
 		{
-			_texture = texture;
-			_tileSize = tileSize;
+			this.texture = texture;
+			this.tileSize = tileSize;
 
-			for (int i = 0; i < TileCount; i++)
+			for (int i = 0; i < this.TileCount; i++)
 			{
-				_tiles.Add(new Tile(this, i));
+				this.tiles.Add(new Tile(this, i));
+			}
+		}
+
+		public int Height
+		{
+			get
+			{
+				return this.texture.Height / this.tileSize;
+			}
+		}
+
+		public int TileCount
+		{
+			get
+			{
+				return this.Width * this.Height;
+			}
+		}
+
+		public int TileSize
+		{
+			get
+			{
+				return this.tileSize;
 			}
 		}
 
 		public int Width
 		{
-			get { return _texture.Width/_tileSize; }
-		}
-
-		public int Height
-		{
-			get { return _texture.Height/_tileSize; }
-		}
-
-		public int TileCount
-		{
-			get { return Width*Height; }
-		}
-
-		public int TileSize
-		{
-			get { return _tileSize; }
+			get
+			{
+				return this.texture.Width / this.tileSize;
+			}
 		}
 
 		public Tile this[int tileIndex]
 		{
-			get { return _tiles[tileIndex]; }
+			get
+			{
+				return this.tiles[tileIndex];
+			}
 		}
 
 		public void Render(RenderContext renderContext, int index, Rectangle destination)
 		{
-			_texture.Render(renderContext, new Rectangle(RelativeOnScreenPositionFromIndex(index), new Vector2(_tileSize, _tileSize)), destination);
+			this.texture.Render(
+				renderContext, 
+				new Rectangle(this.RelativeOnScreenPositionFromIndex(index), new Vector2(this.tileSize, this.tileSize)), 
+				destination);
 		}
 
 		private Point2 RelativeOnScreenPositionFromIndex(int index)
 		{
-			return new Point2(_tileSize*(index%Height), _tileSize*(index/Width));
+			return new Point2(this.tileSize * (index % this.Height), this.tileSize * (index / this.Width));
 		}
 	}
 }

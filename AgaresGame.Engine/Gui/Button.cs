@@ -1,65 +1,72 @@
-﻿using AgaresGame.Engine.Graphics;
-using AgaresGame.Engine.Mathematics;
-
-namespace AgaresGame.Engine.Gui
+﻿namespace AgaresGame.Engine.Gui
 {
+	using AgaresGame.Engine.Graphics;
+	using AgaresGame.Engine.Mathematics;
+
 	public class Button : ISizedRenderable
 	{
-		private readonly GameEvents _gameEvents;
-		private readonly ButtonAppearance _appearance;
-		private readonly ISizedRenderable _content;
-		private Point2 _position;
+		private readonly ButtonAppearance appearance;
+
+		private readonly ISizedRenderable content;
+
+		private readonly GameEvents gameEvents;
+
+		private Point2 position;
+
+		public Button(GameEvents gameEvents, ButtonAppearance appearance, ISizedRenderable content)
+		{
+			this.gameEvents = gameEvents;
+			this.appearance = appearance;
+			this.content = content;
+
+			this.InitializeEvents();
+		}
 
 		public delegate void ClickDelegate(object sender, ClickDelegateArgs args);
+
 		public event ClickDelegate Click;
-		
+
 		public Vector2 Size
 		{
 			get
 			{
-				return new Vector2
-					(
-					_content.Size.X + _appearance.Padding.Right + _appearance.Padding.Left,
-					_content.Size.Y + _appearance.Padding.Bottom + _appearance.Padding.Bottom
-					);
+				return new Vector2(
+					this.content.Size.X + this.appearance.Padding.Right + this.appearance.Padding.Left, 
+					this.content.Size.Y + this.appearance.Padding.Bottom + this.appearance.Padding.Bottom);
 			}
 		}
 
-		public Button(GameEvents gameEvents, ButtonAppearance appearance, ISizedRenderable content)
+		public void Render(RenderContext context, Point2 renderPosition)
 		{
-			_gameEvents = gameEvents;
-			_appearance = appearance;
-			_content = content;
+			this.position = renderPosition;
 
-			InitializeEvents();
-		}
+			Vector2 contentSize = this.content.Size;
+			var paddedContentSize = new Vector2(
+				contentSize.X + this.appearance.Padding.Left + this.appearance.Padding.Right, 
+				contentSize.Y + this.appearance.Padding.Top + this.appearance.Padding.Bottom);
 
-		private void InitializeEvents()
-		{
-			_gameEvents.Click += (o, args) =>
-			{
-				if (new Rectangle(_position, Size).Contains(args.Position))
-				{
-					OnClick(new ClickDelegateArgs(args.Button));
-				}
-			};
-		}
-
-		public void Render(RenderContext context, Point2 position)
-		{
-			_position = position;
-
-			var contentSize = _content.Size;
-			var paddedContentSize = new Vector2(contentSize.X + _appearance.Padding.Left + _appearance.Padding.Right, contentSize.Y + _appearance.Padding.Top + _appearance.Padding.Bottom);
-
-			_appearance.Background.RenderScaled(context, new Rectangle(position, paddedContentSize));
-			context.Render(_content, position + new Vector2(_appearance.Padding.Left, _appearance.Padding.Top));
+			this.appearance.Background.RenderScaled(context, new Rectangle(renderPosition, paddedContentSize));
+			context.Render(this.content, renderPosition + new Vector2(this.appearance.Padding.Left, this.appearance.Padding.Top));
 		}
 
 		protected virtual void OnClick(ClickDelegateArgs args)
 		{
-			var handler = Click;
-			if (handler != null) handler(this, args);
+			ClickDelegate handler = this.Click;
+			if (handler != null)
+			{
+				handler(this, args);
+			}
+		}
+
+		private void InitializeEvents()
+		{
+			this.gameEvents.Click += (o, args) =>
+				{
+					if (new Rectangle(this.position, this.Size).Contains(args.Position))
+					{
+						this.OnClick(new ClickDelegateArgs(args.Button));
+					}
+				};
 		}
 	}
 }

@@ -1,7 +1,7 @@
-﻿using System;
-
-namespace AgaresGame.Engine.Resources
+﻿namespace AgaresGame.Engine.Resources
 {
+	using System;
+
 	public interface IResource : IDisposable
 	{
 	}

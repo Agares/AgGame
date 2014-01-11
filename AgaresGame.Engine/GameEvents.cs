@@ -1,25 +1,31 @@
-using System;
-using AgaresGame.Engine.Gui;
-using AgaresGame.Engine.Mathematics;
-using SDL2;
-
 namespace AgaresGame.Engine
 {
+	using System;
+
+	using AgaresGame.Engine.Gui;
+	using AgaresGame.Engine.Mathematics;
+
+	using SDL2;
+
 	public class GameEvents
 	{
-		private readonly KeyboardTranslator _keyboardTranslator;
-		private readonly MouseTranslator _mouseTranslator;
+		private readonly KeyboardTranslator keyboardTranslator;
 
-		public event Action<object, EventArgs> Quit;
-		public event Action<object, MouseMoveEventArgs> MouseMove;
-		public event Action<object, KeyDownEventArgs> KeyDown;
-		public event Action<object, ClickEventArgs> Click;
+		private readonly MouseTranslator mouseTranslator;
 
 		public GameEvents()
 		{
-			_keyboardTranslator = new KeyboardTranslator();
-			_mouseTranslator = new MouseTranslator();
+			this.keyboardTranslator = new KeyboardTranslator();
+			this.mouseTranslator = new MouseTranslator();
 		}
+
+		public event Action<object, ClickEventArgs> Click;
+
+		public event Action<object, KeyDownEventArgs> KeyDown;
+
+		public event Action<object, MouseMoveEventArgs> MouseMove;
+
+		public event Action<object, EventArgs> Quit;
 
 		public void HandleEvents()
 		{
@@ -29,43 +35,57 @@ namespace AgaresGame.Engine
 				switch (ev.type)
 				{
 					case SDL.SDL_EventType.SDL_QUIT:
-						OnQuit();
+						this.OnQuit();
 						break;
 					case SDL.SDL_EventType.SDL_MOUSEMOTION:
-						OnMouseMove(new Point2(ev.motion.x, ev.motion.y));
+						this.OnMouseMove(new Point2(ev.motion.x, ev.motion.y));
 						break;
 					case SDL.SDL_EventType.SDL_KEYDOWN:
-						OnKeyDown(_keyboardTranslator.TranslateKey(ev.key.keysym.sym), _keyboardTranslator.TranslateModifier(ev.key.keysym.mod));
+						this.OnKeyDown(
+							this.keyboardTranslator.TranslateKey(ev.key.keysym.sym), 
+							this.keyboardTranslator.TranslateModifier(ev.key.keysym.mod));
 						break;
 					case SDL.SDL_EventType.SDL_MOUSEBUTTONDOWN:
-						OnClick(_mouseTranslator.TranslateButton(ev.button.button), new Point2(ev.button.x, ev.button.y));
+						this.OnClick(this.mouseTranslator.TranslateButton(ev.button.button), new Point2(ev.button.x, ev.button.y));
 						break;
 				}
 			}
 		}
 
+		protected virtual void OnClick(MouseButtons button, Point2 position)
+		{
+			Action<object, ClickEventArgs> handler = this.Click;
+			if (handler != null)
+			{
+				handler(this, new ClickEventArgs(button, position));
+			}
+		}
+
 		protected virtual void OnKeyDown(Keys key, Modifiers modifier)
 		{
-			var handler = KeyDown;
-			if (handler != null) handler(this, new KeyDownEventArgs(key, modifier));
+			Action<object, KeyDownEventArgs> handler = this.KeyDown;
+			if (handler != null)
+			{
+				handler(this, new KeyDownEventArgs(key, modifier));
+			}
 		}
 
 		protected virtual void OnMouseMove(Point2 position)
 		{
-			var handler = MouseMove;
-			if (handler != null) handler(this, new MouseMoveEventArgs(position));
+			Action<object, MouseMoveEventArgs> handler = this.MouseMove;
+			if (handler != null)
+			{
+				handler(this, new MouseMoveEventArgs(position));
+			}
 		}
 
 		protected virtual void OnQuit()
 		{
-			var handler = Quit;
-			if (handler != null) handler(this, EventArgs.Empty);
-		}
-
-		protected virtual void OnClick(MouseButtons button, Point2 position)
-		{
-			var handler = Click;
-			if (handler != null) handler(this, new ClickEventArgs(button, position));
+			Action<object, EventArgs> handler = this.Quit;
+			if (handler != null)
+			{
+				handler(this, EventArgs.Empty);
+			}
 		}
 	}
 }

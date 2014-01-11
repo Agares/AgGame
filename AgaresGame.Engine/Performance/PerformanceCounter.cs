@@ -1,21 +1,22 @@
-﻿using SDL2;
-
-namespace AgaresGame.Engine.Performance
+﻿namespace AgaresGame.Engine.Performance
 {
+	using SDL2;
+
 	public class PerformanceCounter
 	{
-		private readonly uint _startTicks;
-		private uint _endTicks;
+		private readonly uint startTicks;
+
+		private uint endTicks;
 
 		public PerformanceCounter()
 		{
-			_startTicks = SDL.SDL_GetTicks();
+			this.startTicks = SDL.SDL_GetTicks();
 		}
 
 		public PerformanceCounterResult EndFrame()
 		{
-			_endTicks = SDL.SDL_GetTicks();
-			return new PerformanceCounterResult(((double) _endTicks - _startTicks)/1000.0);
+			this.endTicks = SDL.SDL_GetTicks();
+			return new PerformanceCounterResult(((double)this.endTicks - this.startTicks) / 1000.0);
 		}
 	}
 }

@@ -1,28 +1,31 @@
-﻿using System.Windows.Forms;
-using AgaresGame.Engine.Mathematics;
-using AgaresGame.Engine.Resources.Graphics;
-
-namespace AgaresGame.Engine.Graphics
+﻿namespace AgaresGame.Engine.Graphics
 {
-	public class Text : IRenderable, ISizedRenderable
+	using AgaresGame.Engine.Mathematics;
+	using AgaresGame.Engine.Resources.Graphics;
+
+	public class Text : ISizedRenderable
 	{
-		private readonly Font _font;
-		private readonly string _text;
+		private readonly Font font;
+
+		private readonly string text;
 
 		public Text(Font font, string text)
 		{
-			_font = font;
-			_text = text;
+			this.font = font;
+			this.text = text;
 		}
 
 		public Vector2 Size
 		{
-			get { return _font.ComputeSize(_text); }
+			get
+			{
+				return this.font.ComputeSize(this.text);
+			}
 		}
 
 		public void Render(RenderContext context, Point2 position)
 		{
-			_font.Render(context, _text, position);
+			this.font.Render(context, this.text, position);
 		}
 	}
 }

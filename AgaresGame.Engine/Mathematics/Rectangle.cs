@@ -4,26 +4,28 @@ namespace AgaresGame.Engine.Mathematics
 	{
 		public Rectangle(Point2 position, Vector2 size)
 		{
-			Position = position;
-			Size = size;
+			this.Position = position;
+			this.Size = size;
 		}
-
-		public Point2 Position { get; private set; }
-		public Vector2 Size { get; private set; }
 
 		public int Area
 		{
-			get { return Size.X*Size.Y; }
+			get
+			{
+				return this.Size.X * this.Size.Y;
+			}
 		}
+
+		public Point2 Position { get; private set; }
+
+		public Vector2 Size { get; private set; }
 
 		public bool Contains(Point2 point)
 		{
-			var secondVertex = Position + Size;
+			Point2 secondVertex = this.Position + this.Size;
 
-			return point.X <= secondVertex.X 
-				&& point.Y <= secondVertex.Y
-				&& point.X >= Position.X 
-				&& point.Y >= Position.Y;
+			return point.X <= secondVertex.X && point.Y <= secondVertex.Y && point.X >= this.Position.X
+					&& point.Y >= this.Position.Y;
 		}
 	}
 }

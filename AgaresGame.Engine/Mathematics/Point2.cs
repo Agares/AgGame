@@ -6,17 +6,18 @@
 
 		public Point2(int x, int y)
 		{
-			X = x;
-			Y = y;
+			this.X = x;
+			this.Y = y;
 		}
 
 		public Point2(Vector2 vector)
 		{
-			X = vector.X;
-			Y = vector.Y;
+			this.X = vector.X;
+			this.Y = vector.Y;
 		}
 
 		public int X { get; private set; }
+
 		public int Y { get; private set; }
 
 		public static Point2 operator +(Point2 point, Vector2 vector)

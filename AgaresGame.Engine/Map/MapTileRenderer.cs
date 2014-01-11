@@ -1,26 +1,38 @@
-using AgaresGame.Engine.Extensions;
-using AgaresGame.Engine.Mathematics;
-
 namespace AgaresGame.Engine.Map
 {
+	using AgaresGame.Engine.Extensions;
+	using AgaresGame.Engine.Mathematics;
+
 	public class MapTileRenderer
 	{
-		private readonly MapRenderer _mapRenderer;
-		private readonly Point2 _relativePosition;
+		private readonly MapRenderer mapRenderer;
 
-		private Point2 OnScreenPosition
+		private readonly Point2 relativePosition;
+
+		public MapTileRenderer(MapRenderer mapRenderer, Point2 relativePosition)
 		{
-			get
-			{
-				return _mapRenderer.RenderArea.Position + new Vector2(_relativePosition.X * _mapRenderer.TileSize, _relativePosition.Y * _mapRenderer.TileSize);
-			}
+			this.mapRenderer = mapRenderer;
+			this.relativePosition = relativePosition;
 		}
 
 		private Point2 AbsolutePosition
 		{
 			get
 			{
-				return new Point2(_relativePosition.X + _mapRenderer.Shift.X, _relativePosition.Y + _mapRenderer.Shift.Y);
+				return new Point2(
+					this.relativePosition.X + this.mapRenderer.Shift.X, 
+					this.relativePosition.Y + this.mapRenderer.Shift.Y);
+			}
+		}
+
+		private Point2 OnScreenPosition
+		{
+			get
+			{
+				return this.mapRenderer.RenderArea.Position
+						+ new Vector2(
+							this.relativePosition.X * this.mapRenderer.TileSize, 
+							this.relativePosition.Y * this.mapRenderer.TileSize);
 			}
 		}
 
@@ -28,25 +40,19 @@ namespace AgaresGame.Engine.Map
 		{
 			get
 			{
-				return AbsolutePosition.X.InRangeInclusive(0, _mapRenderer.Map.Dimensions.X - 1) &&
-					   AbsolutePosition.X.InRangeInclusive(0, _mapRenderer.Map.Dimensions.Y - 1);
+				return this.AbsolutePosition.X.InRangeInclusive(0, this.mapRenderer.Map.Dimensions.X - 1)
+						&& this.AbsolutePosition.X.InRangeInclusive(0, this.mapRenderer.Map.Dimensions.Y - 1);
 			}
-		}
-
-		public MapTileRenderer(MapRenderer mapRenderer, Point2 relativePosition)
-		{
-			_mapRenderer = mapRenderer;
-			_relativePosition = relativePosition;
 		}
 
 		public void Render(RenderContext renderContext)
 		{
-			if (!TileExists)
+			if (!this.TileExists)
 			{
 				return;
 			}
 
-			_mapRenderer.Map[AbsolutePosition.X, AbsolutePosition.Y].Render(renderContext, OnScreenPosition);
+			this.mapRenderer.Map[this.AbsolutePosition.X, this.AbsolutePosition.Y].Render(renderContext, this.OnScreenPosition);
 		}
 	}
 }

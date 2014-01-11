@@ -1,41 +1,25 @@
-using AgaresGame.Engine.Extensions;
-using AgaresGame.Engine.Mathematics;
-
 namespace AgaresGame.Engine.Map
 {
+	using AgaresGame.Engine.Extensions;
+	using AgaresGame.Engine.Mathematics;
+
 	public class MapObjectRenderer
 	{
-		private readonly MapRenderer _mapRenderer;
-		private readonly MapObject _mapObject;
+		private readonly MapObject mapObject;
 
-		private Vector2 SecondVertex
-		{
-			get { return FirstVertex + _mapObject.RenderDimensions; }
-		}
+		private readonly MapRenderer mapRenderer;
 
-		private Point2 RelativePosition
+		public MapObjectRenderer(MapRenderer mapRenderer, MapObject mapObject)
 		{
-			get
-			{
-				return new Point2(_mapObject.PositionInTiles.X - _mapRenderer.Shift.X, _mapObject.PositionInTiles.Y - _mapRenderer.Shift.Y);
-			}
-		}
-
-		private Vector2 OffScreenArea
-		{
-			get
-			{
-				var offScreenArea = new Vector2(RelativePosition) * _mapRenderer.TileSize * -1;
-				offScreenArea = new Vector2(offScreenArea.X.Clamp(0), offScreenArea.Y.Clamp(0));
-				return offScreenArea;
-			}
+			this.mapRenderer = mapRenderer;
+			this.mapObject = mapObject;
 		}
 
 		private Vector2 FirstVertex
 		{
 			get
 			{
-				var firstVertex = new Vector2(RelativePosition) * _mapRenderer.TileSize;
+				Vector2 firstVertex = new Vector2(this.RelativePosition) * this.mapRenderer.TileSize;
 				firstVertex = new Vector2(firstVertex.X.Clamp(0), firstVertex.Y.Clamp(0));
 				return firstVertex;
 			}
@@ -45,29 +29,53 @@ namespace AgaresGame.Engine.Map
 		{
 			get
 			{
-				return SecondVertex.X > 0 
-					&& SecondVertex.Y > 0
-					&& FirstVertex.X <= _mapRenderer.RenderArea.Size.X 
-					&& FirstVertex.Y <= _mapRenderer.RenderArea.Size.Y;
+				return this.SecondVertex.X > 0 && this.SecondVertex.Y > 0
+						&& this.FirstVertex.X <= this.mapRenderer.RenderArea.Size.X
+						&& this.FirstVertex.Y <= this.mapRenderer.RenderArea.Size.Y;
 			}
 		}
 
-		public MapObjectRenderer(MapRenderer mapRenderer, MapObject mapObject)
+		private Vector2 OffScreenArea
 		{
-			_mapRenderer = mapRenderer;
-			_mapObject = mapObject;
+			get
+			{
+				Vector2 offScreenArea = new Vector2(this.RelativePosition) * this.mapRenderer.TileSize * -1;
+				offScreenArea = new Vector2(offScreenArea.X.Clamp(0), offScreenArea.Y.Clamp(0));
+				return offScreenArea;
+			}
+		}
+
+		private Point2 RelativePosition
+		{
+			get
+			{
+				return new Point2(
+					this.mapObject.PositionInTiles.X - this.mapRenderer.Shift.X, 
+					this.mapObject.PositionInTiles.Y - this.mapRenderer.Shift.Y);
+			}
+		}
+
+		private Vector2 SecondVertex
+		{
+			get
+			{
+				return this.FirstVertex + this.mapObject.RenderDimensions;
+			}
 		}
 
 		public void Render(RenderContext renderContext)
 		{
-			if (!IsOnScreen)
+			if (!this.IsOnScreen)
 			{
 				return;
 			}
 
-			var dimensionsToRender = _mapObject.RenderDimensions - OffScreenArea;
+			Vector2 dimensionsToRender = this.mapObject.RenderDimensions - this.OffScreenArea;
 
-			_mapObject.Renderable.RenderFragment(renderContext, new Rectangle(new Point2(OffScreenArea), dimensionsToRender), new Point2(FirstVertex));
+			this.mapObject.Renderable.RenderFragment(
+				renderContext, 
+				new Rectangle(new Point2(this.OffScreenArea), dimensionsToRender), 
+				new Point2(this.FirstVertex));
 		}
 	}
 }

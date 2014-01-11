@@ -1,24 +1,31 @@
-using System.Collections.Generic;
-using System.Linq;
-using AgaresGame.Engine.Mathematics;
-using AgaresGame.Engine.Resources.Graphics;
-
 namespace AgaresGame.Engine.Graphics
 {
+	using System.Collections.Generic;
+	using System.Linq;
+
+	using AgaresGame.Engine.Mathematics;
+	using AgaresGame.Engine.Resources.Graphics;
+
 	public class SpriteSheet
 	{
-		private readonly IDictionary<int, Sprite> _sprites;
-		private readonly Texture _texture;
+		private readonly IDictionary<int, Sprite> sprites;
 
-		public Sprite this[int i]
-		{
-			get { return _sprites[i]; }
-		}
+		private readonly Texture texture;
 
 		public SpriteSheet(Texture texture, IEnumerable<KeyValuePair<int, Rectangle>> sprites)
 		{
-			_texture = texture;
-			_sprites = sprites.Select(x => new  KeyValuePair<int, Sprite>(x.Key, new Sprite(_texture, x.Value))).ToDictionary(x => x.Key, x => x.Value);
+			this.texture = texture;
+			this.sprites =
+				sprites.Select(x => new KeyValuePair<int, Sprite>(x.Key, new Sprite(this.texture, x.Value)))
+					.ToDictionary(x => x.Key, x => x.Value);
+		}
+
+		public Sprite this[int i]
+		{
+			get
+			{
+				return this.sprites[i];
+			}
 		}
 	}
 }

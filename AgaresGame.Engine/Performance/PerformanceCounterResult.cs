@@ -2,21 +2,27 @@
 {
 	public class PerformanceCounterResult
 	{
-		private readonly double _delta;
+		private readonly double delta;
 
 		public PerformanceCounterResult(double delta)
 		{
-			_delta = delta;
+			this.delta = delta;
 		}
 
 		public double Delta
 		{
-			get { return _delta; }
+			get
+			{
+				return this.delta;
+			}
 		}
 
 		public double FramesPerSecond
 		{
-			get { return 1.0/_delta; }
+			get
+			{
+				return 1.0 / this.delta;
+			}
 		}
 	}
 }

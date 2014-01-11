@@ -1,48 +1,52 @@
-﻿using System;
-using AgaresGame.Engine.Cache;
-using AgaresGame.Engine.Mathematics;
-
-namespace AgaresGame.Engine.Resources.Graphics
+﻿namespace AgaresGame.Engine.Resources.Graphics
 {
+	using System;
+
+	using AgaresGame.Engine.Cache;
+	using AgaresGame.Engine.Mathematics;
+
 	public class Font : IResource
 	{
-		private readonly IObjectCache<FontWithSize> _cache = new InMemoryObjectCache<FontWithSize>();
-		private readonly string _filename;
+		private readonly IObjectCache<SizedFont> cache = new InMemoryObjectCache<SizedFont>();
+
+		private readonly string filename;
 
 		public Font(string filename)
 		{
-			_filename = filename;
-			Appearance = new FontAppearance();
+			this.filename = filename;
+			this.Appearance = new FontAppearance();
 		}
 
 		public FontAppearance Appearance { get; set; }
 
+		private string CacheKey
+		{
+			get
+			{
+				return string.Format("{0}#{1}", this.filename, this.Appearance.Size);
+			}
+		}
+
+		private SizedFont CurrentSizedFont
+		{
+			get
+			{
+				return this.cache.TryGet(this.CacheKey, TimeSpan.MaxValue, () => new SizedFont(this.filename, this.Appearance.Size));
+			}
+		}
 
 		public void Dispose()
 		{
 		}
 
-		public void Render(RenderContext renderContext, string text, Point2 destination)
-		{
-			CurrentSizedFont.Render(renderContext, text, destination, Appearance.Color);
-		}
-
-		private FontWithSize CurrentSizedFont
-		{
-			get
-			{
-				return _cache.TryGet(CacheKey, TimeSpan.MaxValue, () => new FontWithSize(_filename, Appearance.Size));
-			}
-		}
-
-		private string CacheKey
-		{
-			get { return string.Format("{0}#{1}", _filename, Appearance.Size); }
-		}
-
 		public Vector2 ComputeSize(string text)
 		{
-			return CurrentSizedFont.ComputeSize(text);
+			return this.CurrentSizedFont.ComputeSize(text);
+		}
+
+		public void Render(RenderContext renderContext, string text, Point2 destination)
+		{
+			this.CurrentSizedFont.Render(renderContext, text, destination, this.Appearance.Color);
 		}
 	}
 }

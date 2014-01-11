@@ -1,7 +1,7 @@
-﻿using AgaresGame.Engine.Mathematics;
-
-namespace AgaresGame.Engine.Graphics
+﻿namespace AgaresGame.Engine.Graphics
 {
+	using AgaresGame.Engine.Mathematics;
+
 	public interface IRenderable
 	{
 		void Render(RenderContext context, Point2 position);

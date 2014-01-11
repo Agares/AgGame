@@ -1,28 +1,31 @@
-using System;
-using AgaresGame.Engine.Cache;
-
 namespace AgaresGame.Engine.Resources.Loaders
 {
-	public abstract class CachedResourceLoader<T> : IResourceLoader<T> where T : class, IResource
+	using System;
+
+	using AgaresGame.Engine.Cache;
+
+	public abstract class CachedResourceLoader<T> : IResourceLoader<T>
+		where T : class, IResource
 	{
-		private readonly IObjectCache<T> _resourceCache = new InMemoryObjectCache<T>();
+		private readonly IObjectCache<T> resourceCache = new InMemoryObjectCache<T>();
 
 		public T this[string identifier]
 		{
 			get
 			{
-				var resource = _resourceCache.TryGet(identifier, new TimeSpan(365, 0, 0, 0), () => LoadResource(identifier));
+				T resource = this.resourceCache.TryGet(identifier, new TimeSpan(365, 0, 0, 0), () => this.LoadResource(identifier));
 				if (resource == null)
 				{
 					throw new Exception("Resoource " + identifier + " not found!");
 				}
+
 				return resource;
 			}
 		}
 
 		public void Dispose()
 		{
-			_resourceCache.Dispose();
+			this.resourceCache.Dispose();
 		}
 
 		protected abstract T LoadResource(string identifier);

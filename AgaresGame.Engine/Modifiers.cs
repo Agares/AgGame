@@ -2,14 +2,18 @@
 {
 	public enum Modifiers
 	{
-		None,
+		None, 
 
-		LCtrl,
-		LShift,
-		LAlt,
+		LCtrl, 
 
-		RCtrl,
-		RShift,
+		LShift, 
+
+		LAlt, 
+
+		RCtrl, 
+
+		RShift, 
+
 		RAlt
 	}
 }

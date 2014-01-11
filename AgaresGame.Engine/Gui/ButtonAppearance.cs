@@ -2,12 +2,13 @@ namespace AgaresGame.Engine.Gui
 {
 	public class ButtonAppearance
 	{
-		public IScalableSizedRenderable Background { get; set; }
-		public Padding Padding { get; set; }
-
 		public ButtonAppearance()
 		{
-			Padding = new Padding();
+			this.Padding = new Padding();
 		}
+
+		public IScalableSizedRenderable Background { get; set; }
+
+		public Padding Padding { get; set; }
 	}
 }

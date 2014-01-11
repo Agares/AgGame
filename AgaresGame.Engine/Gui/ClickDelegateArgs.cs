@@ -1,14 +1,14 @@
-using System;
-
 namespace AgaresGame.Engine.Gui
 {
+	using System;
+
 	public class ClickDelegateArgs : EventArgs
 	{
-		public MouseButtons MouseButton { get; private set; }
-
 		public ClickDelegateArgs(MouseButtons button)
 		{
-			MouseButton = button;
+			this.MouseButton = button;
 		}
+
+		public MouseButtons MouseButton { get; private set; }
 	}
 }

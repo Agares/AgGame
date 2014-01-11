@@ -1,7 +1,7 @@
-﻿using System;
-
-namespace AgaresGame.Engine.Extensions
+﻿namespace AgaresGame.Engine.Extensions
 {
+	using System;
+
 	public static class IntExtensions
 	{
 		public static int Clamp(this int self, int min, int max)

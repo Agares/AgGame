@@ -1,16 +1,17 @@
-using System;
-
 namespace AgaresGame.Engine
 {
+	using System;
+
 	public class KeyDownEventArgs : EventArgs
 	{
-		public Keys Key { get; private set; }
-		public Modifiers Modifier { get; private set; }
-
 		public KeyDownEventArgs(Keys key, Modifiers modifier)
 		{
-			Key = key;
-			Modifier = modifier;
+			this.Key = key;
+			this.Modifier = modifier;
 		}
+
+		public Keys Key { get; private set; }
+
+		public Modifiers Modifier { get; private set; }
 	}
 }

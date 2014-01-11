@@ -1,9 +1,11 @@
-using System;
-using AgaresGame.Engine.Gui;
-using SDL2;
-
 namespace AgaresGame.Engine
 {
+	using System;
+
+	using AgaresGame.Engine.Gui;
+
+	using SDL2;
+
 	public class MouseTranslator
 	{
 		public MouseButtons TranslateButton(uint which)

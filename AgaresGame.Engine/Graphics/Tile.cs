@@ -1,26 +1,30 @@
-using AgaresGame.Engine.Mathematics;
-
 namespace AgaresGame.Engine.Graphics
 {
+	using AgaresGame.Engine.Mathematics;
+
 	public class Tile : ISizedRenderable
 	{
-		private readonly int _index;
-		private readonly TileSet _tileSet;
+		private readonly int index;
 
-		public Vector2 Size
-		{
-			get { return new Vector2(_tileSet.TileSize, _tileSet.TileSize); }
-		}
+		private readonly TileSet tileSet;
 
 		internal Tile(TileSet tileSet, int index)
 		{
-			_tileSet = tileSet;
-			_index = index;
+			this.tileSet = tileSet;
+			this.index = index;
+		}
+
+		public Vector2 Size
+		{
+			get
+			{
+				return new Vector2(this.tileSet.TileSize, this.tileSet.TileSize);
+			}
 		}
 
 		public void Render(RenderContext renderContext, Point2 destination)
 		{
-			_tileSet.Render(renderContext, _index, new Rectangle(destination, Size));
+			this.tileSet.Render(renderContext, this.index, new Rectangle(destination, this.Size));
 		}
 	}
 }
